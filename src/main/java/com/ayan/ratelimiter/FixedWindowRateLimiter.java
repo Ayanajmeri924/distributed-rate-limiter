@@ -26,16 +26,18 @@ public class FixedWindowRateLimiter implements RateLimiter {
 
         Window w = windows.computeIfAbsent(key, k -> new Window());
 
-        if (now - w.startTime >= windowMillis) {
-            w.startTime = now;
-            w.count = 0;
-        }
+        synchronized (w) {
+            if (now - w.startTime >= windowMillis) {
+                w.startTime = now;
+                w.count = 0;
+            }
 
-        if (w.count < limit) {
-            w.count++;
-            return new RateLimitResult(true, limit - w.count);
-        }
+            if (w.count < limit) {
+                w.count++;
+                return new RateLimitResult(true, limit - w.count);
+            }
 
-        return new RateLimitResult(false, 0);
+            return new RateLimitResult(false, 0);
+        }
     }
 }
