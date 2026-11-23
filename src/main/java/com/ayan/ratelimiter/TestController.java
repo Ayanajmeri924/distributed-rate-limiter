@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    private final RateLimiter limiter = new FixedWindowRateLimiter(5, 10_000);
+    private final RateLimiter limiter;
+
+    public TestController(RateLimiter limiter) {
+        this.limiter = limiter;
+    }
 
     @GetMapping("/test")
     public ResponseEntity<String> test(HttpServletRequest request) {
