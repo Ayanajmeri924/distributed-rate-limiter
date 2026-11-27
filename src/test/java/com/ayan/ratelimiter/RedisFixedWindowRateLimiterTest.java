@@ -23,7 +23,7 @@ class RedisFixedWindowRateLimiterTest {
         String key = "test-" + UUID.randomUUID();   // fresh key every run
 
         int threads = 100;
-        ExecutorService pool = Executors.newFixedThreadPool(threads);
+        ExecutorService pool = Executors.newFixedThreadPool(threads) ;
         CountDownLatch start = new CountDownLatch(1);
         CountDownLatch done = new CountDownLatch(threads);
         AtomicInteger allowed = new AtomicInteger();
